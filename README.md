@@ -76,11 +76,44 @@ CE-DTI
 ```
 
 ### Pretrain-Model
+MFMA-DTI uses pretrained language models to extract semantic representations of drugs and proteins. To facilitate reproducibility, the exact pretrained checkpoints and their configurations are specified below.
 
-The Pretrain model mentioned in the paper can be found in [ChemBERTa](https://huggingface.co/DeepChem/ChemBERTa-77M-MLM) and [ProtBERT](https://huggingface.co/Rostlab/prot_bert).
+#### 1. ChemBERTa for Drug Representation
 
+- **Model:** `ChemBERTa-zinc-base-v1`
+- **Hugging Face checkpoint:** `seyonec/ChemBERTa-zinc-base-v1`
+- **Architecture:** RoBERTa (`RobertaForMaskedLM`)
+- **Pretraining objective:** Masked Language Modeling (MLM)
+- **Pretraining data:** approximately 100K chemical SMILES from the ZINC dataset
+- **Hidden size:** 768
+- **Number of Transformer layers:** 6
+- **Number of attention heads:** 12
+- **Intermediate size:** 3072
+- **Vocabulary size:** 767
+- **Maximum position embeddings:** 514
+- **Tokenizer:** ByteLevel tokenizer
+- **Output feature dimension:** 768
+- **Fine-tuning:** The pretrained ChemBERTa parameters are **not fine-tuned on the DTI datasets**. The model is used as a fixed feature extractor to generate drug semantic representations.
+- **Source:** https://huggingface.co/seyonec/ChemBERTa-zinc-base-v1
 
+The locally stored ChemBERTa configuration is consistent with the `ChemBERTa-zinc-base-v1` checkpoint. In particular, it uses a RoBERTa architecture with 6 Transformer layers, a hidden size of 768, and 12 attention heads.
 
+#### 2. ProtBERT for Protein Representation
+
+- **Model:** `ProtBERT`
+- **Hugging Face checkpoint:** `Rostlab/prot_bert`
+- **Architecture:** BERT (`BertForMaskedLM`)
+- **Pretraining objective:** Masked Language Modeling (MLM)
+- **Pretraining data:** UniRef100
+- **Hidden size:** 1024
+- **Number of Transformer layers:** 30
+- **Number of attention heads:** 16
+- **Intermediate size:** 4096
+- **Vocabulary size:** 30
+- **Maximum position embeddings:** 40,000
+- **Output feature dimension:** 1024
+- **Fine-tuning:** The pretrained ProtBERT parameters are **not fine-tuned on the DTI datasets**. The model is used as a fixed feature extractor to generate protein semantic representations.
+- **Source:** https://huggingface.co/Rostlab/prot_bert
 
 
 
